@@ -8,24 +8,24 @@ namespace MyProject.Runtime.Infrastructure
 {
     public sealed class EcsGameStartup : MonoBehaviour
     {
-        private EcsWorld world;
-        private EcsSystems systems;
-        private EcsSystems lateSystems;
+        private EcsWorld _world;
+        private EcsSystems _systems;
+        private EcsSystems _lateSystems;
 
         private void Start()
         {
-            world = new EcsWorld();
-            systems = new EcsSystems(world);
-            lateSystems = new EcsSystems(world);
+            _world = new EcsWorld();
+            _systems = new EcsSystems(_world);
+            _lateSystems = new EcsSystems(_world);
 
-            systems.ConvertScene();
+            _systems.ConvertScene();
 
             AddInjections();
             AddOneFrames();
             AddSystems();
 
-            systems.Init();
-            lateSystems.Init();
+            _systems.Init();
+            _lateSystems.Init();
         }
         private void AddInjections()
         {
@@ -33,7 +33,7 @@ namespace MyProject.Runtime.Infrastructure
         }
         private void AddSystems()
         {
-            systems.
+            _systems.
                 Add(new PlayerInputSystem()).
                 Add(new PlayerJumpSendInputSystem()).
                 Add(new MovementSystem()).
@@ -43,38 +43,38 @@ namespace MyProject.Runtime.Infrastructure
 
 
 
-            lateSystems
+            _lateSystems
                 .Add(new PlayerMouseInputSystem()).
                 Add(new MouseMovementSystem());
         }
         private void AddOneFrames()
         {
-            systems.OneFrame<JumpEvent>();
+            _systems.OneFrame<JumpEvent>();
         }
         private void Update()
         {
-            systems.Run();
+            _systems.Run();
         }
         private void LateUpdate()
         {
-            var systemsList = lateSystems.GetAllSystems();
+            var systemsList = _lateSystems.GetAllSystems();
 
             for (int i = 0; i < systemsList.Count; i++)
             {
                 if (systemsList.Items[i] is IEcsRunLateSystem lateSystem)
                 {
-                    lateSystem.RunLate(lateSystems);
+                    lateSystem.RunLate(_lateSystems);
                 }
             }
         }
         private void OnDestroy()
         {
-            if (systems == null) return;
+            if (_systems == null) return;
 
-            systems.Destroy();
-            systems = null;
-            world.Destroy();
-            world = null;
+            _systems.Destroy();
+            _systems = null;
+            _world.Destroy();
+            _world = null;
         }
     }
 }
