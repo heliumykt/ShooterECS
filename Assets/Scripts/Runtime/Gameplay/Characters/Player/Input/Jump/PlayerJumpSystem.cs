@@ -18,7 +18,6 @@ namespace MyProject.Runtime.Gameplay
 
                 if (!entity.Has<IsGroundedComponent>()) continue;
                 movable.Velocity.y = Mathf.Sqrt(jumpComponent.Force);
-                Debug.Log("Jump" + movable.Velocity.y.ToString());
             }
         }
     }
