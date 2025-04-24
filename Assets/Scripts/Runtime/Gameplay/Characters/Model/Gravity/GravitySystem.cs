@@ -6,14 +6,14 @@ namespace MyProject.Runtime.Gameplay
 {
     sealed class GravitySystem : IEcsRunSystem
     {
-        private readonly EcsFilter<MovableComponent, GravityComponent> groundFilter = null;
+        private readonly EcsFilter<MovableComponent, GravityComponent> _groundFilter = null;
 
         public void Run()
         {
-            foreach (var i in groundFilter)
+            foreach (var i in _groundFilter)
             {
-                ref var movableComponent = ref groundFilter.Get1(i);
-                ref var gravityComponent = ref groundFilter.Get2(i);
+                ref var movableComponent = ref _groundFilter.Get1(i);
+                ref var gravityComponent = ref _groundFilter.Get2(i);
                 ref var characterController = ref movableComponent.CharacterController;
                 ref var velocity = ref movableComponent.Velocity;
 

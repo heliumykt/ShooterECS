@@ -5,29 +5,29 @@ namespace MyProject.Runtime.Gameplay
 {
     sealed class PlayerInputSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerTag, DirectionComponent> directionFilter = null;
+        private readonly EcsFilter<PlayerTag, DirectionComponent> _directionFilter = null;
 
-        private float moveX;
-        private float moveZ;
+        private float _moveX;
+        private float _moveZ;
 
         public void Run()
         {
             SetDirection();
 
-            foreach (var i in directionFilter)
+            foreach (var i in _directionFilter)
             {
-                ref var directionComponent = ref directionFilter.Get2(i);
+                ref var directionComponent = ref _directionFilter.Get2(i);
                 ref var direction = ref directionComponent.Direction;
 
-                direction.x = moveX;
-                direction.z = moveZ;
+                direction.x = _moveX;
+                direction.z = _moveZ;
             }
         }
 
         private void SetDirection()
         {
-            moveX = Input.GetAxis("Horizontal");
-            moveZ = Input.GetAxis("Vertical");
+            _moveX = Input.GetAxis("Horizontal");
+            _moveZ = Input.GetAxis("Vertical");
         }
     }
 }
